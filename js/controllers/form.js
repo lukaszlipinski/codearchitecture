@@ -1,8 +1,8 @@
 /*global BaseController, Events */
 
 /**
- * BaseController - klasa bazowa kontrolera, zawierajaca podsatowa funkcjonalność jak rejestrowanie eventow, componentow,
- *                  timerow itd. Porzadkujaca wszystkie "brudy" wraz ze zniszczeniem obiektu
+ * BaseController - klasa bazowa kontrolera, zawierajaca podstawową funkcjonalność jak: rejestrowanie eventow, componentow,
+ *                  timerow itd. Porzadkujaca wszystkie "brudy" w momencie niszczenia obiektu
  *
  * Events         - Obiekt przetrzymujacy nazwy wszystkich dostępnych w aplikacji zdarzeń. Pomaga w utrzymaniu porzadku
  *                  oraz zapobiega duplikacji nazw.
@@ -26,10 +26,12 @@ app.define('controller/form', function() {
          */
         initialize : function() {
             this.initializeView();
+            this.initializeEventListeners();
         },
 
         /**
-         * Initializes controller's view
+         * View i Controller to dwa rożne obiekty. Współpraca miedzy nimi możliwa jest tylko na ściśle
+         * określonych warunkach. Praca z UI zachodzi przez View, ale kontroller trzyma pieczę nad 'statem' aplikacji
          */
         initializeView : function() {
             var FormView = app.get('view/form');
@@ -38,6 +40,20 @@ app.define('controller/form', function() {
                 el : this.el,
                 controller : this
             });
+        },
+
+        /**
+         * Rejestracja różnego typu listenerów
+         * - na kolekcjach lub modelach
+         * - globalnych
+         * - NIE dla eventow UI
+         */
+        initializeEventListeners : function() {
+            //Przykład nasluchu na zdarzenia z kolekcji. Tworzymy zawsze funkcje która
+            this.getCollection('fields').onAddField(this, this.onAddField.bind(this));
+
+            //Przykład nasłuchu na eventy globalne (np bardzo luzna komunikacja miedzy modułami)
+            this.observeEvent(Events.something.happend, this.onSomethingHappend.bind(this));
         },
 
         /**
@@ -105,8 +121,23 @@ app.define('controller/form', function() {
             return true;
         },
 
+        onAddField : function() {
+            //Zrób coś
+        },
+
+        onSomethingHappend : function() {
+            //Zrób coś
+        },
+
+        onSomeButtonClick : function(type) {
+            //zrób coś z tą informacją
+        },
+
         /**
-         * Destroys controller
+         * Czyści wszystko to co nabrudził kontroller, czyli:
+         * - unbinduje eventy
+         * - niszczy view
+         * - wylacza
          */
         destroy : function() {
             this.view.destroy();

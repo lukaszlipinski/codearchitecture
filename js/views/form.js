@@ -1,3 +1,5 @@
+/*global Button */
+
 app.define('view/form', function() {
     'use strict';
 
@@ -14,6 +16,7 @@ app.define('view/form', function() {
          */
         initialize : function() {
             this.initializePlaceholders();
+            this.initializeButtons();
             this.initializeEventListeners();
         },
 
@@ -30,8 +33,15 @@ app.define('view/form', function() {
 
             for(var i = 0; i < textboxes.length; i++) {
                 //all instances should be stored and destroyed when are no longer in use
-                new Placeholder(textboxes[i]);
+                this.registerComponent('placeholder_' + i, new Placeholder(textboxes[i]));
             }
+        },
+
+        initializeButtons : function() {
+            var some_button = this.registerComponent('some_button', new Button(this.el, {
+                caption : 'Some Button',
+                disabled : true
+            }).on('btn:click', this.onSomeButtonClick.bind(this)));
         },
 
         onFormSubmit : function(e) {
@@ -44,6 +54,12 @@ app.define('view/form', function() {
             });
 
             this.controller.onFormSubmit(e, data);
+        },
+
+        onSomeButtonClick : function(e, btn) {
+            var state = btn.getState();
+
+            this.controller.onSomeButtonClick(state);
         },
 
         /**
