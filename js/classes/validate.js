@@ -1,6 +1,10 @@
 app.define('class/validate', function() {
     'use strict';
 
+	/**
+	 * - niezalezna klasa walidujaca do wielokrotnego uzytku
+	 */
+
     function Validate(str) {
         this.str = str || "";
         this.errors = [];

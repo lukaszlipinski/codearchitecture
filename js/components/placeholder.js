@@ -1,6 +1,10 @@
 app.define('component/placeholder', function() {
     'use strict';
 
+	/**
+	 * - przykład komponentu
+	 */
+
     /**
      * Placeholder Class
      *

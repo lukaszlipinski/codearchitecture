@@ -3,6 +3,14 @@
 app.define('view/form', function() {
     'use strict';
 
+	/**
+	 * Agenda:
+	 * - rejestracja komponentow
+	 * - eventy UI
+	 * - komunikcja z kontrolerem
+	 * - destroy
+	 */
+
     var FormView = function(options) {
         this.el = options.el;
         this.controller = options.controller;
@@ -32,7 +40,6 @@ app.define('view/form', function() {
             var Placeholder = app.get('component/placeholder');
 
             for(var i = 0; i < textboxes.length; i++) {
-                //all instances should be stored and destroyed when are no longer in use
                 this.registerComponent('placeholder_' + i, new Placeholder(textboxes[i]));
             }
         },
@@ -66,7 +73,7 @@ app.define('view/form', function() {
          * Destroys view
          */
         destroy : function() {
-            this.el.removeEventListener('submit', this.onFormSubmit.bind(this));
+
         }
     };
 

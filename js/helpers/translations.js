@@ -1,6 +1,10 @@
 app.define('helper/translation', function() {
     'use strict';
 
+	/**
+	 * Przykład helpera
+	 */
+
     return {
         stringReplace : function(text) {
             if (!text) {

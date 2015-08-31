@@ -2,11 +2,17 @@
 
 /**
  * BaseController - klasa bazowa kontrolera, zawierajaca podstawową funkcjonalność jak: rejestrowanie eventow, componentow,
- *                  timerow itd. Porzadkujaca wszystkie "brudy" w momencie niszczenia obiektu
+ *                  timerow itd. Piorąca wszystkie "brudy" w momencie niszczenia obiektu
  *
  * Events         - Obiekt przetrzymujacy nazwy wszystkich dostępnych w aplikacji zdarzeń. Pomaga w utrzymaniu porzadku
  *                  oraz zapobiega duplikacji nazw.
  *
+ * Agenda:
+ * - funkcja initialize
+ * - granica pomiedzy View i Controllerem
+ * - rejestrowanie listenerow
+ * - validacja formularzy
+ * - destroy
  *
  */
 app.define('controller/form', function() {
@@ -21,18 +27,11 @@ app.define('controller/form', function() {
     };
 
     FormController.prototype = {
-        /**
-         * Wywoływana tylko raz podczas inicializacji instancji. Zawsze deklarowana na samej górze (konwencja).
-         */
         initialize : function() {
             this.initializeView();
             this.initializeEventListeners();
         },
 
-        /**
-         * View i Controller to dwa rożne obiekty. Współpraca miedzy nimi możliwa jest tylko na ściśle
-         * określonych warunkach. Praca z UI zachodzi przez View, ale kontroller trzyma pieczę nad 'statem' aplikacji
-         */
         initializeView : function() {
             var FormView = app.get('view/form');
 
@@ -42,18 +41,14 @@ app.define('controller/form', function() {
             });
         },
 
-        /**
-         * Rejestracja różnego typu listenerów
-         * - na kolekcjach lub modelach
-         * - globalnych
-         * - NIE dla eventow UI
-         */
         initializeEventListeners : function() {
-            //Przykład nasluchu na zdarzenia z kolekcji. Tworzymy zawsze funkcje która
+            //Przykład nasluchu na zdarzenia z kolekcji. Tworzymy zawsze funkcje listenera
             this.getCollection('fields').onAddField(this, this.onAddField.bind(this));
 
             //Przykład nasłuchu na eventy globalne (np bardzo luzna komunikacja miedzy modułami)
             this.observeEvent(Events.something.happend, this.onSomethingHappend.bind(this));
+
+			//Nie dla eventow UI
         },
 
         /**
@@ -133,12 +128,6 @@ app.define('controller/form', function() {
             //zrób coś z tą informacją
         },
 
-        /**
-         * Czyści wszystko to co nabrudził kontroller, czyli:
-         * - unbinduje eventy
-         * - niszczy view
-         * - wylacza
-         */
         destroy : function() {
             this.view.destroy();
         }

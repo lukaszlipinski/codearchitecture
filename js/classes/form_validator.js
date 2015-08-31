@@ -1,6 +1,11 @@
 app.define('class/form_validator', function() {
     'use strict';
 
+	/**
+	 * - przejrzysta struktura
+	 * - jedyna zależnością jest że 'validator' musi miec zaimplementowana metode 'getErrors'
+	 */
+
     /**
      * @param {Array} validators   An array of {Validate} class instances
      * @constructor
