@@ -1,11 +1,11 @@
-/*global jQuery */
+/*global Slider, Button */
 
 (function() {
 	"use strict";
 
 	function CustomSlider(el, params) {
 		this.el = el;
-		this.settings = _.extend({
+		this.settings = Object.assign({
 			min : 1,
 			max : 10,
 			step : 1,
@@ -25,24 +25,21 @@
 			var isDisabled = this.settings.disabled,
 				settings = this.settings;
 
-			this.slider = this.el.find('.js-slider').slider({
+			this.slider = new Slider(this.el.querySelector('.js-slider'), {
 				min : settings.min,
 				max : settings.max,
 				step : settings.step,
 				value : settings.value,
-				$parent : $el,
 				disabled : isDisabled
 			});
 
-			this.button_left = this.el.find('.js-button-left').button({
-				template : 'empty',
+			this.button_left = new Button(this.el.querySelector('.js-button-left'), {
 				disabled : isDisabled
 			}).on('btn:click', function() {
 				this.slider.stepDown();
 			}.bind(this));
 
-			this.button_right = this.el.find('.js-button-right').button({
-				template : 'empty',
+			this.button_right = new Button(this.el.querySelector('.js-button-right'), {
 				disabled : isDisabled
 			}).on('btn:click', function() {
 				this.slider.stepUp();
