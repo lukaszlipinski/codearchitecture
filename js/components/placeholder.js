@@ -1,70 +1,66 @@
 app.define('component/placeholder', function() {
     'use strict';
 
-    /**
-     * Placeholder Class
-     *
-     * @param el {HTMLElement}
-     * @constructor
-     */
-    function Placeholder(el) {
-        this.className = 'placeholder';
-        this.el = el;
-        this.input = el.querySelector('input, textarea');
-        this.placeholder = this.createElement();
+    function Slider(el, params) {
+        var slider = this;
 
-        this.initialize();
+        this.settings = Object.assign({
+            min : 1,
+            max : 10,
+            step : 1,
+            value : 0,
+            disabled : false
+        }, params);
+
+        this.el = el;
+
+        /**
+         * Private API
+         */
+        function initializeEventListeners() {
+            slider.el.addEventListener('mousedown', function() {
+                //cos
+            });
+
+            document.addEventListener('mouseup', function() {
+                slider.el.removeEventListener('mousemove');
+            });
+        }
+
+        function loadTemplate() {
+
+        }
+
+        /**
+         * Initialize
+         */
+        (function() {
+            initializeEventListeners();
+        }());
     }
 
-    Placeholder.prototype = {
-        /**
-         * Initializes component
-         */
-        initialize : function() {
-            this.initializeEventListeners();
-            this.validateVisibility();
-        },
+    /**
+     * Public API
+     */
+    Slider.inherits(APP.Observer, {
+        value : {
+            get : function() {
+                return this.settings.value;
+            },
 
-        /**
-         * Registers UI events
-         */
-        initializeEventListeners : function() {
-            this.input.addEventListener('keyup', this.validateVisibility.bind(this));
-        },
+            set : function(value) {
+                var oldValue = this.settings.value;
 
-        /**
-         * Creates placeholder element and injects it to the textbox or textarea
-         *
-         * @returns {HTMLElement}
-         */
-        createElement : function() {
-            var placeholder = document.createElement('div');
-            placeholder.className = this.className;
-            placeholder.innerHTML = this.el.getAttribute('data-placeholder');
+                this.settings.value = value;
 
-            this.el.appendChild(placeholder);
-
-            return this.el.querySelector('.' + this.className);
-        },
-
-        /**
-         * Checks whether placeholder should be visible or hidden
-         *
-         * @param e {Object}
-         */
-        validateVisibility : function(/*e*/) {
-            var stringLen = (this.input.value || '').length;
-
-            this.placeholder.style.display = stringLen > 0 ? 'none' : 'block';
-        },
-
-        /**
-         * Destroys component
-         */
-        destroy : function() {
-            this.input.removeEventListener('keyup', this.validateVisibility.bind(this));
+                this.trigger('sl:change:value', [value, oldValue]);
+            }
         }
-    };
+    }).implement({
+        destroy : function() {
+            //unbind all events
+        }
+    });
 
-    return Placeholder;
+    return Slider;
 });
