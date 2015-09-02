@@ -1,10 +1,6 @@
 app.define('controller/notifications', function() {
     'use strict';
 
-	/**
-	 * Kolejny przykład kontrollera
-	 */
-
     var NotificationsController = function(options) {
         this.view = null;
         this.el = options.el;

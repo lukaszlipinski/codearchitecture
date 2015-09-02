@@ -3,14 +3,6 @@
 app.define('view/form', function() {
     'use strict';
 
-	/**
-	 * Agenda:
-	 * - rejestracja komponentow
-	 * - eventy UI
-	 * - komunikcja z kontrolerem
-	 * - destroy
-	 */
-
     var FormView = function(options) {
         this.el = options.el;
         this.controller = options.controller;
