@@ -6,7 +6,7 @@ app.define('factory/some_factory', function() {
                 max : 2,
                 step : 0.5,
                 value : 1,
-                horizontal : false
+                orientation : 'vertical',OrientationEnums.VERTICAL
             });
         },
 

@@ -12,7 +12,7 @@
 		/**
 		 * Removes all binded events from component
 		 */
-		function unbindEvents(destroy) {
+		function unbindEvents() {
 			$el.off('.button');
 			$el.off('btn:click');
 		}

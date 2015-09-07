@@ -29,7 +29,7 @@ app.define('controller/form', function() {
         initializeEventListeners : function() {
             //Przykład nasluchu na zdarzenia z kolekcji. Tworzymy zawsze funkcje listenera
             this.getCollection('fields').onAddField(this, this.onAddField.bind(this));
-			this.getCollection('fields').on('change:name', this.onAddField.bind(this));//zle
+			this.getCollection('fields').on('add filed', this.onAddField.bind(this));//zle
 
             //Przykład nasłuchu na eventy globalne (np bardzo luzna komunikacja miedzy modułami)
             this.observeEvent(Events.something.happend, this.onSomethingHappend.bind(this));
